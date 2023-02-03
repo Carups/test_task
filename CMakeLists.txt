@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.22)
+project(test_fast_forward)
+
+set(CMAKE_CXX_STANDARD 20)
+
+add_definitions(-Wno-deprecated)
+set(DataStructure "Array" CACHE STRING "Use array as default data structure")
+if (${DataStructure} MATCHES "Map")
+    set(DataStructureFile impl/order_book_map.cpp)
+elseif(${DataStructure} MATCHES "Heap")
+    set(DataStructureFile impl/order_book_heap.cpp)
+elseif(${DataStructure} MATCHES "Hash")
+    set(DataStructureFile impl/order_book_unordered_map.cpp)
+else()
+    set(DataStructureFile impl/order_book_array.cpp)
+endif()
+add_executable(test_fast_forward main.cpp parser.cpp parser.h impl/order_book.h ${DataStructureFile})
